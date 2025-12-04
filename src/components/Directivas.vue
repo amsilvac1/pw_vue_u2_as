@@ -11,6 +11,16 @@
     <button @click="imprimirNombre()">Imprimir nombre</button>
     <h1>{{ arreglo }}</h1>
     <button @click="agregarEstudiante">Agregar estudiante</button>
+    <hr />
+    <label for="id_nombre_1">Nombre</label>
+    <input v-model="nombre" id="id_nombre_1" type="text" />
+    <label for="id_apellido_1">Apellido</label>
+    <input
+      v-model="apellido"
+      v-on:keypress.enter="agregarEstudiante1"
+      id="id_apellido_1"
+      type="text"
+    />
     <ul>
       <li
         v-show="nombre !== null"
@@ -61,6 +71,22 @@ export default {
       console.log(estu)
       this.arreglo.push(estu)
       this.limpiarFormulario()
+    },
+    agregarEstudiante1(event) {
+      console.log('Evento')
+      if (event.charCode !== 13) {
+        return
+      }
+      const estu = {
+        nombre: this.nombre,
+        apellido: this.apellido,
+      }
+      this.arreglo.push(estu)
+      this.limpiarFormulario()
+      console.log('Enter presionado')
+      console.log('Agregar estudiante 1')
+      console.log(event)
+      console.log(event.charCode)
     },
     limpiarFormulario() {
       this.nombre = ''
