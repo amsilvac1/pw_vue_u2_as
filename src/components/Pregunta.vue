@@ -1,21 +1,49 @@
 <template>
   <div>
-    <img
-      src="https://yesno.wtf/assets/yes/5-64c2804cc48057b94fd0b3eaf323d92c.gif"
-      alt="No puede visualizar la imagen"
-    />
+    <img v-if="imagen" :src="imagen" alt="No puede visualizar la imagen" />
     <div class="pregunta-container">
       <h1>Pregunta</h1>
-      <input type="text" placeholder="Hazme una pregunta" />
+      <input v-model="pregunta" type="text" placeholder="Hazme una pregunta" />
       <p>Recuerda terminar con el signo de interrogación(?)</p>
-      <h2>Sere millonario?</h2>
-      <h1>YES, NO</h1>
+      <h2>{{ pregunta }}</h2>
+      <h1>{{ respuesta }}</h1>
     </div>
   </div>
 </template>
 
 <script>
-export default {}
+import { consumirAPIFacade } from '@/clients/YesNoClient'
+export default {
+  data() {
+    return {
+      pregunta: null,
+      respuesta: null,
+      imagen: null,
+    }
+  },
+  //opción de OPCION API
+  //son observadores de una propiedad Reactiva y se dispara cuando esa propiedad cambia.
+  // Cuando la propiedad pregunta cambia, se ejecuta la función definida dentro del observador.
+  watch: {
+    pregunta(value, oldValue) {
+      if (value.includes('?')) {
+        //va ha llamar a la API
+        this.respuesta = 'Pensando ...'
+        this.consumir()
+      }
+    },
+  },
+  methods: {
+    async consumir() {
+      const resp = await consumirAPIFacade()
+      console.log('Respuesta final:')
+      console.log(resp)
+
+      this.respuesta = resp.answer
+      this.imagen = resp.image
+    },
+  },
+}
 </script>
 
 <style>
