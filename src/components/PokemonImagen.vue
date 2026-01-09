@@ -6,6 +6,15 @@
 
 <script>
 export default {
+  /*Desmontaje de un componente */
+  beforeUnmount() {
+    console.log('beforeUnmount: justo antes de que el componente se destruya')
+  },
+  unmounted() {
+    console.log(
+      'unmounted: se ejecuta cuando ya fue removido el DOM y destrido'
+    )
+  },
   props: {
     pokemonId: {
       type: Number,

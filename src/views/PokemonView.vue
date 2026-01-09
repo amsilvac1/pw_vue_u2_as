@@ -1,11 +1,13 @@
 <template>
   <div class="container">
-    <PokemonImagen :pokemonId="pokemonGanador" />
+    <PokemonImagen v-if="destruir" :pokemonId="pokemonGanador" />
     <PokemonOpciones
       v-on:seleccionado="evaluarGanador($event)"
       :listaPokemons="pokemonArr"
     />
     <h1>{{ mensaje }}</h1>
+
+    <button @click="destruirImagen">Destruir</button>
   </div>
 </template>
 
@@ -26,10 +28,46 @@ export default {
       pokemonArr: [],
       pokemonGanador: null,
       mensaje: null,
+      destruir: true,
     }
   },
+  /*Crea el componente */
+  beforeCreate() {
+    console.log('beforeCreate: apenas inicia la instancia del componenente')
+  },
+  created() {
+    console.log(
+      'created: ya se resolvieron el data, computed, metohos, watch, una vez ejecutados estos se ejecuta el create'
+    )
+  },
+  /*Montaje del componente */
+  beforeMount() {
+    console.log(
+      'beforeMount: Se ejecuta justo antes de renderizar el primer render de un elemento HTML'
+    )
+  },
   mounted() {
+    console.log('mounted: cuando el componenete ya se renderizó')
     this.iniciarJuego()
+  },
+  /*Actualización de un componente */
+  beforeUpdate() {
+    console.log(
+      'beforeUpdate: cuando cambio un data/props y vue está por re-renderizar'
+    )
+  },
+  updated() {
+    console.log('updated: es cuando ya se actualizó,tras la re-renderización')
+  },
+
+  /*Desmontaje de un componente */
+  beforeUnmount() {
+    console.log('beforeUnmount: justo antes de que el componente se destruya')
+  },
+  unmounted() {
+    console.log(
+      'unmounted: se ejecuta cuando ya fue removido el DOM y destrido'
+    )
   },
 
   methods: {
@@ -51,6 +89,10 @@ export default {
         console.log('perdedor')
         this.mensaje = 'Selecionaste el pokemon Incorrecto'
       }
+    },
+
+    destruirImagen() {
+      this.destruir = false
     },
   },
 }
